@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -17,27 +18,24 @@ const ToggleThemeButton = () => {
         <DropdownMenuItem>Alterar Tema</DropdownMenuItem>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem
-          data-thisTheme={theme === "light"}
-          className="data-[thisTheme=true]:font-semibold"
+        <DropdownMenuCheckboxItem
+        checked={theme === "light"}
           onClick={() => setTheme("light")}
         >
           Claro
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          data-thisTheme={theme === "dark"}
-          className="data-[thisTheme=true]:font-semibold"
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={theme === "dark"}
           onClick={() => setTheme("dark")}
         >
           Escuro
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          data-thisTheme={theme === "system"}
-          className="data-[thisTheme=true]:font-semibold"
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={theme === "system"}
           onClick={() => setTheme("system")}
         >
           Sistema
-        </DropdownMenuItem>
+        </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
