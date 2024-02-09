@@ -1,4 +1,5 @@
 import { CreateItemDialog } from "@/components/create-item-dialog"
+import { ItemsTable } from "@/components/items-table"
 
 const Page = () => {
     return (
@@ -6,6 +7,8 @@ const Page = () => {
             <div className="flex items-center justify-between gap-2">
                 <CreateItemDialog />
             </div>
+
+            <ItemsTable />
         </div>
     )
 }
