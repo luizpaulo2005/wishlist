@@ -10,28 +10,32 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "@/components/ui/table";
 import { Item } from "@/types/Item";
 import dayjs from "dayjs";
-import { Button } from "./ui/button";
-import { PenLine, Trash2 } from "lucide-react";
-import { Checkbox } from "./ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Check, X } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
+import { DeleteItem } from "@/components/delete-item-dialog";
+import Link from "next/link";
+import { ChangeItem } from "@/components/change-item-dialog";
 
 const ItemsTable = () => {
   const { status, data: user } = useSession();
   const [name] = useQueryState("name");
   const [price] = useQueryState("price");
   const [date] = useQueryState("date");
+  const [statusFilter] = useQueryState("status");
 
   const { data } = useQuery({
-    queryKey: ["items", name, price, date],
+    queryKey: ["items", name, price, date, statusFilter],
     queryFn: () =>
       getItems({
         name,
         price,
         date,
+        status: statusFilter === "true" ? true : false,
       }),
   });
 
@@ -56,6 +60,7 @@ const ItemsTable = () => {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Status</TableHead>
             <TableHead>Nome</TableHead>
             <TableHead>Preço</TableHead>
             <TableHead>Descrição</TableHead>
@@ -68,7 +73,21 @@ const ItemsTable = () => {
           {data?.map((item: Item) => {
             return (
               <TableRow key={item.id}>
-                <TableCell>{item.name}</TableCell>
+                <TableCell className="flex items-center">
+                  <Button
+                    size="icon"
+                    data-checked={item.status}
+                    onClick={() => handleChangeItemStatus(item.id)}
+                    className="data-[checked=true]:!bg-green-700"
+                  >
+                    {item.status ? <Check /> : <X />}
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Link href={item.url} target="_blank">
+                    {item.name}
+                  </Link>
+                </TableCell>
                 <TableCell>
                   {item.price.toLocaleString("pt-br", {
                     style: "currency",
@@ -85,17 +104,8 @@ const ItemsTable = () => {
                   {dayjs(item.updatedAt).format("DD/MM/YYYY")}
                 </TableCell>
                 <TableCell className="flex justify-center items-center gap-2">
-                  <Checkbox
-                    onClick={() => handleChangeItemStatus(item.id)}
-                    checked={item.status}
-                    className="p-[17px] -mt-1 border-none dark:bg-secondary"
-                  />
-                  <Button variant="destructive" size="icon">
-                    <Trash2 className="size-4" />
-                  </Button>
-                  <Button className="!bg-blue-700" size="icon">
-                    <PenLine className="size-4" />
-                  </Button>
+                  <DeleteItem item={item} />
+                  <ChangeItem />
                 </TableCell>
               </TableRow>
             );

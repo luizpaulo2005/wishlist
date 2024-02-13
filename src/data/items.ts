@@ -6,9 +6,10 @@ interface GetItemsFilters {
   name: string | null;
   price: string | null;
   date: string | null;
+  status: boolean | null;
 }
 
-const getItems = async ({ name, price, date }: GetItemsFilters) => {
+const getItems = async ({ name, price, date, status }: GetItemsFilters) => {
   let items: Item[] | undefined;
 
   await axios
@@ -35,6 +36,10 @@ const getItems = async ({ name, price, date }: GetItemsFilters) => {
       items = items.filter((item: Item) =>
         dayjs(item.createdAt).format("DD/MM/YYYY").includes(date)
       );
+    }
+
+    if ((status !== null) && (status !== false)) {
+      items = items.filter((item: Item) => item.status === status);
     }
 
     return items;
