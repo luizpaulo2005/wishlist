@@ -99,7 +99,7 @@ const ChangeItem = (props: ChangeItemProps) => {
         <DialogDescription>
           Atualize um item da sua lista de desejos
         </DialogDescription>
-        <form onSubmit={handleSubmit(handleCreateItem)} className="space-y-6">
+        <form onSubmit={handleSubmit(handleCreateItem)} className="space-y-6 max-w-sm w-full mx-auto">
           <div className="flex flex-col gap-2">
             <Label className={errors.name && "text-red-500"}>Nome</Label>
             <Input className="col-span-3" {...register("name")} />

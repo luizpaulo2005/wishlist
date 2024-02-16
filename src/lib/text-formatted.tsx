@@ -1,5 +1,4 @@
 "use client";
-
 import { useMediaQuery } from "@/lib/use-media-query";
 
 interface TextFormattedProps {
