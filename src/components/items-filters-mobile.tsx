@@ -83,7 +83,7 @@ const ItemsFiltersMobile = () => {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
+        <div className="mx-auto w-full max-w-sm px-4 sm:px-0">
           <DrawerHeader>
             <DrawerTitle>Filtrar itens</DrawerTitle>
           </DrawerHeader>
