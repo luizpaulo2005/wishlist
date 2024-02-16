@@ -76,7 +76,7 @@ const ItemsFiltersDesktop = () => {
             <SelectTrigger>
               <SelectValue placeholder="Selecione o status" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="w-full">
               <SelectItem value="disabled" disabled>Selecione o status</SelectItem>
               <SelectItem value="all">Todos</SelectItem>
               <SelectItem value="yes">Comprados</SelectItem>
