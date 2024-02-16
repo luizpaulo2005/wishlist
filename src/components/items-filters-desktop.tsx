@@ -5,7 +5,6 @@ import { useQueryState } from "nuqs";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
