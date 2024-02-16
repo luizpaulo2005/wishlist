@@ -2,11 +2,13 @@ import { Item } from "@/types/Item";
 import axios from "axios";
 import dayjs from "dayjs";
 
+type Status = "yes" | "no" | "all";
+
 interface GetItemsFilters {
   name: string | null;
   price: string | null;
   date: string | null;
-  status: boolean | null;
+  status: Status | null;
 }
 
 const getItems = async ({ name, price, date, status }: GetItemsFilters) => {
@@ -38,8 +40,14 @@ const getItems = async ({ name, price, date, status }: GetItemsFilters) => {
       );
     }
 
-    if ((status !== null) && (status !== false)) {
-      items = items.filter((item: Item) => item.status === status);
+    if (status) {
+      if (status === "yes") {
+        items = items.filter((item: Item) => item.status);
+      } else if (status === "no") {
+        items = items.filter((item: Item) => !item.status);
+      } else if (status === "all") {
+        return items;
+      }
     }
 
     return items;

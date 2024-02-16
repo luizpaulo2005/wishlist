@@ -7,22 +7,22 @@ import { z } from "zod";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 const itemsFiltersSchema = z.object({
   name: z.string(),
   price: z.string(),
   date: z.string(),
-  status: z.boolean(),
+  status: z.string(),
 });
 
 type ItemsFiltersSchema = z.infer<typeof itemsFiltersSchema>;
 
-const ItemsFilters = () => {
+const ItemsFiltersDesktop = () => {
   const [name, setName] = useQueryState("name");
   const [price, setPrice] = useQueryState("price");
   const [date, setDate] = useQueryState("date");
-  const [status, setStatus] = useQueryState("status");
-  const statusValue = status === "true" ? true : false;
+  const [status, setStatus] = useQueryState("status");;
 
   const { register, handleSubmit, control } = useForm<ItemsFiltersSchema>({
     resolver: zodResolver(itemsFiltersSchema),
@@ -30,13 +30,11 @@ const ItemsFilters = () => {
       name: name ?? "",
       price: price ?? "",
       date: date ?? "",
-      status: statusValue ?? "",
+      status: status ?? "",
     },
   });
 
   const handleFilterItem = (data: ItemsFiltersSchema) => {
-    console.log(data);
-
     if (data.name) {
       setName(data.name);
     } else {
@@ -56,9 +54,9 @@ const ItemsFilters = () => {
     }
 
     if (data.status) {
-      setStatus("true");
+      setStatus(data.status);
     } else {
-      setStatus("false");
+      setStatus("all");
     }
   };
   return (
@@ -70,21 +68,30 @@ const ItemsFilters = () => {
       <Input {...register("price")} placeholder="Preço" />
       <Input {...register("date")} placeholder="Criado em (DD/MM/YYYY)" />
       <Controller
-        name="status"
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <Button className="flex items-center gap-2" type="button" variant="outline">
-            Apenas Comprados
-            <Checkbox checked={value} onCheckedChange={onChange} />
-          </Button>
-        )}
+      control={control}
+      name="status"
+      render={({ field: { onChange, value }}) => {
+        return (
+          <Select value={value} onValueChange={onChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Selecione o status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="disabled" disabled>Selecione o status</SelectItem>
+              <SelectItem value="all">Todos</SelectItem>
+              <SelectItem value="yes">Comprados</SelectItem>
+              <SelectItem value="no">Não comprados</SelectItem>
+            </SelectContent>
+          </Select>
+        )
+      }}
       />
-      <Button>
-        <Search className="size-4 mr-2" />
+      <Button className="flex items-center gap-2">
+        <Search className="size-4" />
         Filtrar resultados
       </Button>
     </form>
   );
 };
 
-export { ItemsFilters };
+export { ItemsFiltersDesktop };

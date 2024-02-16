@@ -20,22 +20,23 @@ import axios from "axios";
 import { DeleteItem } from "@/components/delete-item-dialog";
 import Link from "next/link";
 import { ChangeItem } from "@/components/change-item-dialog";
+import { TextFormatted } from "@/lib/text-formatted";
 
 const ItemsTable = () => {
-  const { status, data: user } = useSession();
   const [name] = useQueryState("name");
   const [price] = useQueryState("price");
   const [date] = useQueryState("date");
-  const [statusFilter] = useQueryState("status");
+  const [status] = useQueryState("status");
 
   const { data } = useQuery({
-    queryKey: ["items", name, price, date, statusFilter],
+    queryKey: ["items", name, price, date, status],
     queryFn: () =>
       getItems({
         name,
         price,
         date,
-        status: statusFilter === "true" ? true : false,
+        // @ts-ignore
+        status,
       }),
   });
 
@@ -73,7 +74,7 @@ const ItemsTable = () => {
           {data?.map((item: Item) => {
             return (
               <TableRow key={item.id}>
-                <TableCell className="flex items-center">
+                <TableCell className="flex items-center justify-center">
                   <Button
                     size="icon"
                     data-checked={item.status}
@@ -85,7 +86,7 @@ const ItemsTable = () => {
                 </TableCell>
                 <TableCell>
                   <Link href={item.url} target="_blank">
-                    {item.name}
+                    <TextFormatted text={item.name} />
                   </Link>
                 </TableCell>
                 <TableCell>
@@ -95,7 +96,7 @@ const ItemsTable = () => {
                   })}
                 </TableCell>
                 <TableCell>
-                  {item.description ? item.description : "Sem descrição"}
+                  <TextFormatted text={item.description ? item.description : "Sem descrição"} length={20}/>
                 </TableCell>
                 <TableCell>
                   {dayjs(item.createdAt).format("DD/MM/YYYY")}
