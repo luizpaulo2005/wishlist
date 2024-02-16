@@ -74,7 +74,7 @@ const CreateItemDialog = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog modal={false}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2">
           <PlusCircle className="size-4" />

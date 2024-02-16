@@ -106,7 +106,7 @@ const ItemsTable = () => {
                 </TableCell>
                 <TableCell className="flex justify-center items-center gap-2">
                   <DeleteItem item={item} />
-                  <ChangeItem />
+                  <ChangeItem item={item} />
                 </TableCell>
               </TableRow>
             );

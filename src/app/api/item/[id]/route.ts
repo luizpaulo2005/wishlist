@@ -2,8 +2,12 @@ import { authOptions } from "@/lib/auth-options";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
-const changeItemStatus = async (req: Request, { params }: { params: { id: string } }) => {
+const changeItemStatus = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
   const { id } = params;
 
   const item = await prisma.item.findFirst({
@@ -26,7 +30,10 @@ const changeItemStatus = async (req: Request, { params }: { params: { id: string
   }
 };
 
-const deleteItem = async (req: Request, { params }: { params: { id: string } }) => {
+const deleteItem = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
   const session = await getServerSession({ req, ...authOptions });
 
   if (session) {
@@ -51,4 +58,43 @@ const deleteItem = async (req: Request, { params }: { params: { id: string } }) 
   }
 };
 
-export { changeItemStatus as PATCH, deleteItem as DELETE };
+const updateItemSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  url: z.string(),
+  price: z.number(),
+});
+
+const changeItem = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
+  const session = await getServerSession({ req, ...authOptions });
+
+  if (session) {
+    const { id } = params;
+    const { name, description, url, price } = updateItemSchema.parse(
+      await req.json()
+    );
+
+    const update = await prisma.item.update({
+      where: { id },
+      data: {
+        name,
+        description,
+        url,
+        price,
+      },
+    });
+
+    if (update) {
+      return NextResponse.json(update, { status: 200 });
+    } else {
+      return NextResponse.json("Error updated item", { status: 500 });
+    }
+  } else {
+    return NextResponse.json("Unauthenticated", { status: 401 });
+  }
+};
+
+export { changeItemStatus as PATCH, deleteItem as DELETE, changeItem as PUT };
