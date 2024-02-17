@@ -23,6 +23,10 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 
+interface ItemsFiltersProps {
+  hasItems: boolean;
+}
+
 const itemsFiltersSchema = z.object({
   name: z.string(),
   price: z.string(),
@@ -32,7 +36,9 @@ const itemsFiltersSchema = z.object({
 
 type ItemsFiltersSchema = z.infer<typeof itemsFiltersSchema>;
 
-const ItemsFiltersMobile = () => {
+const ItemsFiltersMobile = (props: ItemsFiltersProps) => {
+  const { hasItems } = props;
+
   const [name, setName] = useQueryState("name");
   const [price, setPrice] = useQueryState("price");
   const [date, setDate] = useQueryState("date");
@@ -77,7 +83,7 @@ const ItemsFiltersMobile = () => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button className="flex items-center gap-2">
+        <Button disabled={!hasItems} className="flex items-center gap-2">
           <Search className="size-4" />
           Filtrar
         </Button>

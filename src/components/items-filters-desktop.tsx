@@ -8,6 +8,10 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
+interface ItemsFiltersProps {
+  hasItems: boolean;
+}
+
 const itemsFiltersSchema = z.object({
   name: z.string(),
   price: z.string(),
@@ -17,7 +21,9 @@ const itemsFiltersSchema = z.object({
 
 type ItemsFiltersSchema = z.infer<typeof itemsFiltersSchema>;
 
-const ItemsFiltersDesktop = () => {
+const ItemsFiltersDesktop = (props: ItemsFiltersProps) => {
+  const { hasItems } = props;
+
   const [name, setName] = useQueryState("name");
   const [price, setPrice] = useQueryState("price");
   const [date, setDate] = useQueryState("date");
@@ -63,15 +69,15 @@ const ItemsFiltersDesktop = () => {
       onSubmit={handleSubmit(handleFilterItem)}
       className="flex items-center gap-2"
     >
-      <Input {...register("name")} placeholder="Nome" />
-      <Input {...register("price")} placeholder="Preço" />
-      <Input {...register("date")} placeholder="Criado em (DD/MM/YYYY)" />
+      <Input disabled={!hasItems} {...register("name")} placeholder="Nome" />
+      <Input disabled={!hasItems} {...register("price")} placeholder="Preço" />
+      <Input disabled={!hasItems} {...register("date")} placeholder="Criado em (DD/MM/YYYY)" />
       <Controller
       control={control}
       name="status"
       render={({ field: { onChange, value }}) => {
         return (
-          <Select value={value} onValueChange={onChange}>
+          <Select disabled={!hasItems} value={value} onValueChange={onChange}>
             <SelectTrigger>
               <SelectValue placeholder="Selecione o status" />
             </SelectTrigger>
@@ -85,7 +91,7 @@ const ItemsFiltersDesktop = () => {
         )
       }}
       />
-      <Button className="flex items-center gap-2">
+      <Button disabled={!hasItems} className="flex items-center gap-2">
         <Search className="size-4" />
         Filtrar resultados
       </Button>

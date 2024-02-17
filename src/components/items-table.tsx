@@ -56,6 +56,15 @@ const ItemsTable = () => {
       });
   };
 
+  if (data?.length === 0) {
+    return (
+      <span className="flex items-center justify-center text-center">
+        Sua lista está vazia. Clique no botão + Novo Item para
+        criar um novo item.
+      </span>
+    );
+  }
+
   return (
     <div className="border rounded-lg p-2">
       <Table>
@@ -96,7 +105,10 @@ const ItemsTable = () => {
                   })}
                 </TableCell>
                 <TableCell>
-                  <TextFormatted text={item.description ? item.description : "Sem descrição"} length={20}/>
+                  <TextFormatted
+                    text={item.description ? item.description : "Sem descrição"}
+                    length={20}
+                  />
                 </TableCell>
                 <TableCell>
                   {dayjs(item.createdAt).format("DD/MM/YYYY")}
