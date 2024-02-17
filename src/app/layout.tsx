@@ -10,6 +10,13 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Lista de Desejos",
   description: "App criado para gerenciar sua lista de desejos",
+  icons: [
+    {
+      href: "/icon.png",
+      sizes: "500x500",
+      url: ""
+    }
+  ]
 };
 
 export default function RootLayout({
