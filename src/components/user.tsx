@@ -15,28 +15,26 @@ import {
 const User = () => {
   const { data, status } = useSession();
 
-  if (status === "unauthenticated") {
-    return <Button onClick={() => signIn("google")}>Entrar</Button>;
+  if (status === "authenticated") {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Avatar>
+            {/* @ts-ignore */}
+            <AvatarImage src={data?.user?.image} alt={data?.user?.name} />
+            {/* @ts-ignore */}
+            <AvatarFallback>{data?.user.name}</AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem disabled>{data?.user?.name}</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <ToggleThemeButton />
+          <DropdownMenuItem onClick={() => signOut()}>Sair</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
   }
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Avatar>
-          {/* @ts-ignore */}
-          <AvatarImage src={data?.user?.image} alt={data?.user?.name} />
-          {/* @ts-ignore */}
-          <AvatarFallback>{data?.user.name}</AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem disabled>{data?.user?.name}</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <ToggleThemeButton />
-        <DropdownMenuItem onClick={() => signOut()}>Sair</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
 };
 
 export { User };
