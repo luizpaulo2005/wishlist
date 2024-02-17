@@ -31,7 +31,7 @@ const Page = () => {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       {status === "unauthenticated" ? (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center min-w-screen px-10">
           <Button variant="link" onClick={() => signIn("google")}>
             Clique aqui para entrar e poder criar e gerenciar seus itens.
           </Button>
