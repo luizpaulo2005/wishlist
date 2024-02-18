@@ -1,5 +1,0 @@
-Falta:
-
-- Excluir (rota também) - Feito
-- Alterar (rota também)
-- Busca mobile
