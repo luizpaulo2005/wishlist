@@ -30,7 +30,10 @@ const getItems = async ({ name, price, date, status }: GetItemsFilters) => {
 
     if (price) {
       items = items.filter((item: Item) =>
-        JSON.stringify(item.price).includes(price)
+        JSON.stringify(item.grossPrice).includes(price)
+      );
+      items = items.filter((item: Item) =>
+        JSON.stringify(item.netPrice).includes(price)
       );
     }
 

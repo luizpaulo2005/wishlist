@@ -37,7 +37,9 @@ const createItemSchema = z.object({
   name: z.string().nonempty("O campo nome é obrigatório"),
   description: z.string().optional(),
   url: z.string().optional(),
-  price: z.coerce.number(),
+  grossPrice: z.coerce.number(),
+  netPrice: z.coerce.number().optional(),
+  installments: z.coerce.number(),
 });
 
 const createItem = async (req: Request) => {
@@ -51,16 +53,19 @@ const createItem = async (req: Request) => {
       },
     });
 
-    const { name, description, url, price } = createItemSchema.parse(
+    const { name, description, url, grossPrice, netPrice, installments } = createItemSchema.parse(
       await req.json()
     );
 
     const create = await prisma.item.create({
       data: {
         name,
-        description,
+        // @ts-ignore
+        description: description.length > 0 ? description : null,
         url,
-        price,
+        grossPrice,
+        netPrice: netPrice ? netPrice : grossPrice,
+        installments: installments ? installments : 1,
         // @ts-ignore
         userId: user.id,
       },

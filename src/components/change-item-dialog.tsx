@@ -22,10 +22,12 @@ import { Input } from "./ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 const updateItemSchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  url: z.string(),
-  price: z.number(),
+  name: z.string().nonempty("O campo nome é obrigatório"),
+  description: z.string().optional(),
+  url: z.string().optional(),
+  grossPrice: z.coerce.number(),
+  netPrice: z.coerce.number().optional(),
+  installments: z.coerce.number(),
 });
 
 type UpdateItemProps = z.infer<typeof updateItemSchema>;
@@ -56,7 +58,9 @@ const ChangeItem = (props: ChangeItemProps) => {
       name: item.name ?? "",
       description: item.description ?? "",
       url: item.url ?? "",
-      price: item.price ?? 0,
+      grossPrice: item.grossPrice ?? 0,
+      netPrice: item.netPrice ?? 0,
+      installments: item.installments ?? 0,
     },
   });
 
@@ -85,7 +89,7 @@ const ChangeItem = (props: ChangeItemProps) => {
   };
 
   return (
-    <Dialog modal={false}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button
           className="transition-colors bg-blue-700 hover:bg-blue-500"
@@ -115,13 +119,51 @@ const ChangeItem = (props: ChangeItemProps) => {
             <Input className="col-span-3" {...register("url")} />
           </div>
           <div className="flex flex-col gap-2">
-            <Label className={errors.price && "text-red-500"}>Preço</Label>
+            <Label className={errors.grossPrice && "text-red-500"}>
+              Preço à Vista
+            </Label>
             <Input
               className="col-span-3"
               type="number"
               step={0.01}
-              {...register("price")}
+              {...register("grossPrice")}
             />
+            {errors.grossPrice && (
+              <span className="text-red-500">{errors.grossPrice.message}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label className={errors.netPrice && "text-red-500"}>
+              Preço à Prazo
+            </Label>
+            <Input
+              className="col-span-3"
+              type="number"
+              step={0.01}
+              {...register("netPrice")}
+            />
+            {errors.netPrice && (
+              <span className="text-red-500">{errors.netPrice.message}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label className={errors.installments && "text-red-500"}>
+              Parcelas
+            </Label>
+            <Input
+              className="col-span-3"
+              type="number"
+              step={1}
+              {...register("installments")}
+            />
+            <span className="text-muted">
+              Insira a quantidade máxima de parcelas sem juros
+            </span>
+            {errors.installments && (
+              <span className="text-red-500">
+                {errors.installments.message}
+              </span>
+            )}
           </div>
           <DialogFooter>
             <DialogClose asChild>

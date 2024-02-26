@@ -25,7 +25,9 @@ const createItemSchema = z.object({
   name: z.string().nonempty("O campo nome é obrigatório"),
   description: z.string().optional(),
   url: z.string().optional(),
-  price: z.coerce.number(),
+  grossPrice: z.coerce.number(),
+  netPrice: z.coerce.number().optional(),
+  installments: z.coerce.number(),
 });
 
 type CreateItemProps = z.infer<typeof createItemSchema>;
@@ -74,7 +76,7 @@ const CreateItemDialog = () => {
   };
 
   return (
-    <Dialog modal={false}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2">
           <PlusCircle className="size-4" />
@@ -113,10 +115,25 @@ const CreateItemDialog = () => {
             )}
           </div>
           <div className="flex flex-col gap-2">
-            <Label className={errors.price && "text-red-500"}>Preço</Label>
-            <Input className="col-span-3" type="number" step={0.01} {...register("price")} />
-            {errors.price && (
-              <span className="text-red-500">{errors.price.message}</span>
+            <Label className={errors.grossPrice && "text-red-500"}>Preço à Vista</Label>
+            <Input className="col-span-3" type="number" step={0.01} {...register("grossPrice")} />
+            {errors.grossPrice && (
+              <span className="text-red-500">{errors.grossPrice.message}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label className={errors.netPrice && "text-red-500"}>Preço à Prazo</Label>
+            <Input className="col-span-3" type="number" step={0.01} {...register("netPrice")} />
+            {errors.netPrice && (
+              <span className="text-red-500">{errors.netPrice.message}</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label className={errors.installments && "text-red-500"}>Parcelas</Label>
+            <Input className="col-span-3" type="number" step={1} {...register("installments")} />
+            <span className="text-muted">Insira a quantidade máxima de parcelas sem juros</span>
+            {errors.installments && (
+              <span className="text-red-500">{errors.installments.message}</span>
             )}
           </div>
           <DialogFooter>

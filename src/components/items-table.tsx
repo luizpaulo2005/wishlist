@@ -1,7 +1,6 @@
 "use client";
 import { getItems } from "@/data/items";
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import { useQueryState } from "nuqs";
 import {
   Table,
@@ -21,6 +20,7 @@ import { DeleteItem } from "@/components/delete-item-dialog";
 import Link from "next/link";
 import { ChangeItem } from "@/components/change-item-dialog";
 import { TextFormatted } from "@/lib/text-formatted";
+import { InstallmentPopover } from "./installment-popover";
 
 const ItemsTable = () => {
   const [name] = useQueryState("name");
@@ -59,8 +59,8 @@ const ItemsTable = () => {
   if (data?.length === 0) {
     return (
       <span className="flex items-center justify-center text-center">
-        Sua lista está vazia. Clique no botão + Novo Item para
-        criar um novo item.
+        Sua lista está vazia. Clique no botão + Novo Item para criar um novo
+        item.
       </span>
     );
   }
@@ -72,7 +72,9 @@ const ItemsTable = () => {
           <TableRow>
             <TableHead>Status</TableHead>
             <TableHead>Nome</TableHead>
-            <TableHead>Preço</TableHead>
+            <TableHead className="text-nowrap">Valor à Vista</TableHead>
+            <TableHead className="text-nowrap">Valor à Prazo</TableHead>
+            <TableHead className="text-center">Parcelas</TableHead>
             <TableHead>Descrição</TableHead>
             <TableHead>Adicionado em</TableHead>
             <TableHead>Atualizado em</TableHead>
@@ -99,10 +101,22 @@ const ItemsTable = () => {
                   </Link>
                 </TableCell>
                 <TableCell>
-                  {item.price.toLocaleString("pt-br", {
+                  {item.grossPrice.toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
+                </TableCell>
+                <TableCell>
+                  {item.netPrice.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </TableCell>
+                <TableCell>
+                  <InstallmentPopover
+                    installment={item.installments}
+                    netPrice={item.netPrice}
+                  />
                 </TableCell>
                 <TableCell>
                   <TextFormatted

@@ -60,11 +60,12 @@ const deleteItem = async (
 
 const updateItemSchema = z.object({
   name: z.string(),
-  description: z.string(),
-  url: z.string(),
-  price: z.number(),
+  description: z.string().optional(),
+  url: z.string().optional(),
+  grossPrice: z.coerce.number(),
+  netPrice: z.coerce.number().optional(),
+  installments: z.coerce.number(),
 });
-
 const changeItem = async (
   req: Request,
   { params }: { params: { id: string } }
@@ -73,7 +74,7 @@ const changeItem = async (
 
   if (session) {
     const { id } = params;
-    const { name, description, url, price } = updateItemSchema.parse(
+    const { name, description, url, grossPrice, installments, netPrice } = updateItemSchema.parse(
       await req.json()
     );
 
@@ -81,9 +82,12 @@ const changeItem = async (
       where: { id },
       data: {
         name,
-        description,
+        // @ts-ignore
+        description: description.length > 0 ? description : null,
         url,
-        price,
+        grossPrice,
+        netPrice: netPrice ? netPrice : grossPrice,
+        installments: installments ? installments : 1,
       },
     });
 
