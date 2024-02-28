@@ -4,29 +4,41 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+const ChangeItemStatusSchema = z.object({
+  shippingCost: z.number().optional(),
+})
+
 const changeItemStatus = async (
   req: Request,
   { params }: { params: { id: string } }
 ) => {
-  const { id } = params;
+  const session = await getServerSession({ req, ...authOptions });
 
-  const item = await prisma.item.findFirst({
-    where: { id },
-  });
+  if (session) {
+    const { id } = params;
+    const { shippingCost } = ChangeItemStatusSchema.parse(await req.json());
 
-  if (item) {
-    const update = await prisma.item.update({
-      where: { id: item.id },
-      data: {
-        status: !item.status,
-      },
+    const item = await prisma.item.findFirst({
+      where: { id },
     });
 
-    if (update) {
-      return NextResponse.json("changed", { status: 200 });
-    } else {
-      return NextResponse.json("error", { status: 500 });
+    if (item) {
+      const update = await prisma.item.update({
+        where: { id: item.id },
+        data: {
+          shippingCost: shippingCost ? shippingCost : null,
+          status: !item.status,
+        },
+      });
+
+      if (update) {
+        return NextResponse.json("changed", { status: 200 });
+      } else {
+        return NextResponse.json("error", { status: 500 });
+      }
     }
+  } else {
+    return NextResponse.json("Unauthenticated", { status: 401 });
   }
 };
 
@@ -74,9 +86,8 @@ const changeItem = async (
 
   if (session) {
     const { id } = params;
-    const { name, description, url, grossPrice, installments, netPrice } = updateItemSchema.parse(
-      await req.json()
-    );
+    const { name, description, url, grossPrice, installments, netPrice } =
+      updateItemSchema.parse(await req.json());
 
     const update = await prisma.item.update({
       where: { id },

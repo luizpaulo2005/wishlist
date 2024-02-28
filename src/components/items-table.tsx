@@ -1,7 +1,6 @@
 "use client";
-import { getItems } from "@/data/items";
-import { useQuery } from "@tanstack/react-query";
-import { useQueryState } from "nuqs";
+import { ChangeItem } from "@/components/change-item-dialog";
+import { DeleteItem } from "@/components/delete-item-dialog";
 import {
   Table,
   TableBody,
@@ -10,17 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Item } from "@/types/Item";
-import dayjs from "dayjs";
-import { Button } from "@/components/ui/button";
-import { Check, X } from "lucide-react";
-import { toast } from "sonner";
-import axios from "axios";
-import { DeleteItem } from "@/components/delete-item-dialog";
-import Link from "next/link";
-import { ChangeItem } from "@/components/change-item-dialog";
+import { getItems } from "@/data/items";
 import { TextFormatted } from "@/lib/text-formatted";
-import { InstallmentPopover } from "./installment-popover";
+import { Item } from "@/types/Item";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import Link from "next/link";
+import { useQueryState } from "nuqs";
+import { ChangeItemState } from "./change-item-state-dialog";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const ItemsTable = () => {
   const [name] = useQueryState("name");
@@ -40,21 +38,13 @@ const ItemsTable = () => {
       }),
   });
 
-  const handleChangeItemStatus = async (id: Item["id"]) => {
-    toast.loading("Alterando status do item");
-
-    await axios
-      .patch(`/api/item/${id}`)
-      .then(() => {
-        toast.success("Item atualizado com sucesso");
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
-      })
-      .catch(() => {
-        toast.error("Erro ao atualizar item");
+  useEffect(() => {
+    setTimeout(() => {
+      toast.info("Clique no nome do item para ver mais detalhes.", {
+        position: "top-center",
       });
-  };
+    }, 3000);
+  }, []);
 
   if (data?.length === 0) {
     return (
@@ -69,12 +59,10 @@ const ItemsTable = () => {
     <div className="border rounded-lg p-2">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="text-nowrap">
             <TableHead>Status</TableHead>
             <TableHead>Nome</TableHead>
-            <TableHead className="text-nowrap">Valor à Vista</TableHead>
-            <TableHead className="text-nowrap">Valor à Prazo</TableHead>
-            <TableHead className="text-center">Parcelas</TableHead>
+            <TableHead>Valor à Vista</TableHead>
             <TableHead>Descrição</TableHead>
             <TableHead>Adicionado em</TableHead>
             <TableHead>Atualizado em</TableHead>
@@ -86,17 +74,10 @@ const ItemsTable = () => {
             return (
               <TableRow key={item.id}>
                 <TableCell className="flex items-center justify-center">
-                  <Button
-                    size="icon"
-                    data-checked={item.status}
-                    onClick={() => handleChangeItemStatus(item.id)}
-                    className="data-[checked=true]:!bg-green-700"
-                  >
-                    {item.status ? <Check /> : <X />}
-                  </Button>
+                  <ChangeItemState item={item} />
                 </TableCell>
                 <TableCell>
-                  <Link href={item.url} target="_blank">
+                  <Link href={`/${item.id}`}>
                     <TextFormatted text={item.name} />
                   </Link>
                 </TableCell>
@@ -105,18 +86,6 @@ const ItemsTable = () => {
                     style: "currency",
                     currency: "BRL",
                   })}
-                </TableCell>
-                <TableCell>
-                  {item.netPrice.toLocaleString("pt-br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </TableCell>
-                <TableCell>
-                  <InstallmentPopover
-                    installment={item.installments}
-                    netPrice={item.netPrice}
-                  />
                 </TableCell>
                 <TableCell>
                   <TextFormatted

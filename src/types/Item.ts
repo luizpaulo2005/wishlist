@@ -8,11 +8,12 @@ export interface Item {
   grossPrice: number;
   netPrice: number;
   installments: number;
+  shippingCost: number;
   userId: User["id"];
 
   user: User;
 
-  status: string;
+  status: boolean;
   createdAt: string;
   updatedAt: string;
 }
