@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/app/providers";
+import { AuthProvider, ThemeProvider } from "@/app/providers";
 
 // Fonte padrão da aplicação
 const inter = Inter({ subsets: ["latin"] });
@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <AuthProvider>
-        <body className={inter.className}>{children}</body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <body className={inter.className}>{children}</body>
+        </ThemeProvider>
       </AuthProvider>
     </html>
   );
