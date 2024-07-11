@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider, ThemeProvider } from "@/app/providers";
+import { Toaster } from "@/components/ui/sonner";
 
 // Fonte padrão da aplicação
 const inter = Inter({ subsets: ["latin"] });
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="pt-br">
       <AuthProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Toaster richColors />
           <body className={inter.className}>{children}</body>
         </ThemeProvider>
       </AuthProvider>
