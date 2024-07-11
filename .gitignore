@@ -37,4 +37,4 @@ next-env.d.ts
 
 # enviroment variables
 
-env*
+.env*
