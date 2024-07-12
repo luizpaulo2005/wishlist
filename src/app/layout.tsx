@@ -22,9 +22,11 @@ export default function RootLayout({
     <html lang="pt-br">
       <AuthProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Toaster richColors />
-          <Navbar />
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <Toaster richColors />
+            <Navbar />
+            {children}
+          </body>
         </ThemeProvider>
       </AuthProvider>
     </html>
