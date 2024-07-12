@@ -61,7 +61,7 @@ const getItems = async (req: Request) => {
   } catch (err) {
     // Retornando uma resposta de erro
     return NextResponse.json(
-      { message: "Erro ao buscar itens" },
+      { message: "Erro ao buscar itens", error: err },
       { status: 500 }
     );
   }
