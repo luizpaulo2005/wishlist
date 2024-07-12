@@ -142,6 +142,77 @@ const updateItem = async (
   }
 };
 
+const changeItemStatus = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
+  try {
+    // Coletando a sessão do usuário
+    const session = await getServerSession({ req, ...authOptions });
+
+    if (!session) {
+      // Retornando uma resposta de erro
+      return NextResponse.json({ message: "Não autorizado" }, { status: 401 });
+    }
+
+    // Buscando dados do usuário logado
+    const user = await prisma.user.findUnique({
+      where: {
+        // Buscando usuário pelo email
+        // @ts-ignore
+        email: session.user.email,
+      },
+    });
+
+    // Verificando se o usuário foi encontrado
+    if (!user) {
+      // Retornando uma resposta de erro
+      return NextResponse.json(
+        { message: "Usuário não encontrado" },
+        { status: 404 }
+      );
+    }
+
+    // Buscando item a ser atualizado
+    const item = await prisma.item.findUnique({
+      where: {
+        // Filtrando itens pelo id do usuário
+        id: params.id,
+        userId: user.id,
+      },
+    });
+
+    if (!item) {
+      // Retornando uma resposta de erro
+      return NextResponse.json(
+        { message: "Item não encontrado" },
+        { status: 404 }
+      );
+    }
+
+    // Atualizando status do item
+    const updatedItem = await prisma.item.update({
+      where: {
+        // Filtrando itens pelo id do usuário
+        id: params.id,
+        userId: user.id,
+      },
+      data: {
+        status: !item.status,
+      },
+    });
+
+    // Retornando item atualizado
+    return NextResponse.json(updatedItem, { status: 200 });
+  } catch (err) {
+    // Retornando uma resposta de erro
+    return NextResponse.json(
+      { message: "Erro ao mudar status do item", error: err },
+      { status: 500 }
+    );
+  }
+};
+
 const deleteItem = async (
   req: Request,
   { params }: { params: { id: string } }
@@ -201,4 +272,9 @@ const deleteItem = async (
   }
 };
 
-export { getItem as GET, updateItem as PATCH, deleteItem as DELETE };
+export {
+  getItem as GET,
+  updateItem as PUT,
+  deleteItem as DELETE,
+  changeItemStatus as PATCH,
+};
