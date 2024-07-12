@@ -7,47 +7,47 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+import { LaptopMinimal, Moon, Sun } from "lucide-react";
 
-interface ToggleThemeButtonProps {
-  isAuthenticated: boolean | undefined;
-}
-
-const ToggleThemeButton = ({ isAuthenticated }: ToggleThemeButtonProps) => {
+const ToggleThemeButton = () => {
   const { theme, setTheme } = useTheme();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <span>
-          {!isAuthenticated ? (
-            <Button size="icon">
-              {theme === "light" ? <Sun /> : <Moon />}
-            </Button>
-          ) : (
-            <DropdownMenuItem>Alterar Tema</DropdownMenuItem>
-          )}
+          <DropdownMenuItem className="flex items-center gap-2">
+            {theme === "light" && <Sun className="size-4" />}
+            {theme === "dark" && <Moon className="size-4" />}
+            {theme === "system" && <LaptopMinimal className="size-4" />}
+            Alterar Tema
+          </DropdownMenuItem>
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuCheckboxItem
           checked={theme === "light"}
           onClick={() => setTheme("light")}
+          className="flex items-center gap-2 justify-between"
         >
           Claro
+          <Sun className="size-4" />
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={theme === "dark"}
           onClick={() => setTheme("dark")}
+          className="flex items-center gap-2 justify-between"
         >
           Escuro
+          <Moon className="size-4" />
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={theme === "system"}
           onClick={() => setTheme("system")}
+          className="flex items-center gap-2 justify-between"
         >
           Sistema
+          <LaptopMinimal className="size-4" />
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>

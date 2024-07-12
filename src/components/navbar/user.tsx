@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "@/components/navbar/user-avatar";
 import { ToggleThemeButton } from "@/components/navbar/change-theme-dropdown";
+import { LogOut, User as UserIcon } from "lucide-react";
 
 const User = () => {
   const { data, status } = useSession();
@@ -17,7 +18,6 @@ const User = () => {
   if (status === "unauthenticated") {
     return (
       <div className="flex items-center gap-1">
-        <ToggleThemeButton isAuthenticated={false} />
         <Button onClick={() => signIn("google")}>Entrar</Button>
       </div>
     );
@@ -32,10 +32,22 @@ const User = () => {
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem disabled>{data?.user?.name}</DropdownMenuItem>
+          <DropdownMenuItem
+            disabled
+            className="flex items-center gap-1 max-w-40 truncate"
+          >
+            <UserIcon className="size-4 shrink-0" />
+            {data?.user?.name}
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <ToggleThemeButton isAuthenticated={true} />
-          <DropdownMenuItem onClick={() => signOut()}>Sair</DropdownMenuItem>
+          <ToggleThemeButton />
+          <DropdownMenuItem
+            onClick={() => signOut()}
+            className="flex items-center gap-2"
+          >
+            <LogOut className="size-4" />
+            Sair
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );

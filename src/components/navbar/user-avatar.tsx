@@ -6,7 +6,6 @@ interface UserAvatarProps {
       email?: string | null | undefined;
       image?: string | null | undefined;
     };
-    
 }
 
 const UserAvatar = (props: UserAvatarProps) => {
