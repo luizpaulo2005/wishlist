@@ -2,10 +2,11 @@ import { authOptions } from "@/lib/auth-options";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 const getItem = async (
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
@@ -72,7 +73,7 @@ const updateItemSchema = z.object({
 });
 
 const updateItem = async (
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
@@ -143,7 +144,7 @@ const updateItem = async (
 };
 
 const changeItemStatus = async (
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
@@ -214,7 +215,7 @@ const changeItemStatus = async (
 };
 
 const deleteItem = async (
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {

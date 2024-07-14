@@ -2,8 +2,9 @@ import { authOptions } from "@/lib/auth-options";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const getNewestItems = async (req: Request) => {
+const getNewestItems = async (req: NextRequest) => {
   try {
     // Coletando a sessão do usuário
     const session = await getServerSession({ req, ...authOptions });

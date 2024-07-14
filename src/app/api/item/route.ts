@@ -2,9 +2,10 @@ import { authOptions } from "@/lib/auth-options";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { z } from "zod";
 
-const getItems = async (req: Request) => {
+const getItems = async (req: NextRequest) => {
   try {
     // Coletando a sessão do usuário
     const session = await getServerSession({ req, ...authOptions });
@@ -75,7 +76,7 @@ const createItemSchema = z.object({
   status: z.boolean().optional(),
 });
 
-const createItem = async (req: Request) => {
+const createItem = async (req: NextRequest) => {
   try {
     // Coletando a sessão do usuário
     const session = await getServerSession({ req, ...authOptions });
