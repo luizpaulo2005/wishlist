@@ -15,11 +15,9 @@ export const metadata: Metadata = {
     "Uma lista de desejos criada para fins de treino de aprendizado.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <html lang="pt-br">
+    <html lang="pt-br" suppressHydrationWarning>
       <AuthProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <body className={inter.className}>
@@ -31,4 +29,6 @@ export default function RootLayout({
       </AuthProvider>
     </html>
   );
-}
+};
+
+export default RootLayout;
