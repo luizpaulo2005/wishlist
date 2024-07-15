@@ -20,7 +20,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     <html lang="pt-br" suppressHydrationWarning>
       <AuthProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <body className={`${inter.className} p-2`}>
+          <body className={inter.className}>
             <Toaster richColors />
             <Navbar />
             {children}
