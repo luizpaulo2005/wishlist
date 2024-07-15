@@ -1,9 +1,9 @@
+import { AuthProvider, ThemeProvider } from "@/app/providers";
+import { Navbar } from "@/components/navbar";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AuthProvider, ThemeProvider } from "@/app/providers";
-import { Toaster } from "@/components/ui/sonner";
-import { Navbar } from "@/components/navbar";
 
 // Fonte padrão da aplicação
 const inter = Inter({ subsets: ["latin"] });
