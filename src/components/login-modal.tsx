@@ -3,8 +3,8 @@ import Image from "next/image";
 
 const LoginModal = () => {
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
-      <div className="rounded-xl py-5 px-6 bg-zinc-900 space-y-2 flex flex-col gap-2">
+    <div className="fixed inset-0 backdrop-blur-sm bg-black/60 flex items-center justify-center">
+      <div className="rounded-xl py-5 px-6 dark:bg-zinc-900 bg-zinc-300 space-y-2 flex flex-col gap-2">
         <p className="font-semibold text-xl text-center">
           Faça login para poder criar sua lista de desejos
         </p>
