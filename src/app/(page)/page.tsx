@@ -5,9 +5,21 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { LoginModal } from "@/components/login-modal";
+import { Item } from "@/components/item/index";
+
+interface ItemProps {
+  id: string;
+  name: string;
+  value: number;
+  description: string;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+  status: boolean;
+}
 
 const Page = () => {
-  const [items, setItems] = useState<[] | undefined>([]);
+  const [items, setItems] = useState<ItemProps[] | undefined>([]);
   const { status } = useSession();
 
   const fetchItems = async () => {
@@ -30,19 +42,19 @@ const Page = () => {
     toast.error("Erro ao carregar os itens da lista de desejos.");
   }
 
+  console.log(items)
+
   if (items?.length === 0) {
     return <h1>Nenhum item na lista</h1>;
   }
 
   return (
-    <div>
-      <h1>
+    <div className="max-w-3xl mx-auto">
+      <div className="flex flex-col gap-2 items-center">
         {items?.map((item) => {
-          // @ts-ignore
-          return <p key={item}>{item.name}</p>;
+          return <Item key={item.id} item={item} />;
         })}
-      </h1>
-      ;
+      </div>
     </div>
   );
 };
