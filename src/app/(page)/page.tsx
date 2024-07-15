@@ -42,8 +42,6 @@ const Page = () => {
     toast.error("Erro ao carregar os itens da lista de desejos.");
   }
 
-  console.log(items)
-
   if (items?.length === 0) {
     return <h1>Nenhum item na lista</h1>;
   }
