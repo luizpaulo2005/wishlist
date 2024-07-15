@@ -13,15 +13,7 @@ import { ToggleThemeButton } from "@/components/navbar/change-theme-dropdown";
 import { LogOut, User as UserIcon } from "lucide-react";
 
 const User = () => {
-  const { data, status } = useSession();
-
-  if (status === "unauthenticated") {
-    return (
-      <div className="flex items-center gap-1">
-        <Button onClick={() => signIn("google")}>Entrar</Button>
-      </div>
-    );
-  }
+  const { data } = useSession();
 
   if (data && data.user) {
     return (
