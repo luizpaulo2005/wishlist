@@ -39,6 +39,9 @@ const getItems = async (req: NextRequest) => {
         // Filtrando itens pelo id do usuário
         userId: user.id,
       },
+      orderBy: {
+        createdAt: "desc",
+      }
     });
 
     if (!items) {
