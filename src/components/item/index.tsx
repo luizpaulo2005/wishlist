@@ -27,7 +27,7 @@ const Item = ({
   item: { id, name, value, description, url, createdAt, updatedAt, status },
 }: ItemProps) => {
   return (
-    <div className="flex items-center justify-between gap-2 p-2 w-full max-w-2xl border rounded-lg">
+    <div className="flex items-center justify-between gap-2 p-2 w-full max-w-full border rounded-lg">
       <div className="flex items-center gap-2">
         <ToggleItemStatus id={id} status={status} />
         <div className="flex items-center gap-2">
