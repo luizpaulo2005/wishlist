@@ -74,9 +74,8 @@ const getItems = async (req: NextRequest) => {
 const createItemSchema = z.object({
   name: z.string().nonempty(),
   description: z.string().optional(),
-  url: z.string().url().optional(),
+  url: z.string().optional().or(z.string().url("O link do item deve ser uma URL válida")),
   value: z.number().positive(),
-  status: z.boolean().optional(),
 });
 
 const createItem = async (req: NextRequest) => {
@@ -108,7 +107,7 @@ const createItem = async (req: NextRequest) => {
     }
 
     // Coletando dados do item
-    const { name, description, url, value, status } = createItemSchema.parse(
+    const { name, description, url, value } = createItemSchema.parse(
       await req.json()
     );
 
@@ -119,7 +118,6 @@ const createItem = async (req: NextRequest) => {
         description,
         url,
         value,
-        status,
         // Adicionando o id do usuário ao item
         userId: user.id,
       },
