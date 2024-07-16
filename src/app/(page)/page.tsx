@@ -6,6 +6,9 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { LoginModal } from "@/components/login-modal";
 import { Item } from "@/components/item/index";
+import { NoItems } from "@/components/item/no-items";
+import { CreateItemDialog } from "@/components/item/create-item-dialog";
+import { ItemsFilters } from "@/components/item/items-filters";
 
 interface ItemProps {
   id: string;
@@ -43,11 +46,15 @@ const Page = () => {
   }
 
   if (items?.length === 0) {
-    return <h1>Nenhum item na lista</h1>;
+    return <NoItems />;
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mt-2 space-y-2 mx-auto">
+      <div className="flex items-center justify-between">
+        <ItemsFilters />
+        <CreateItemDialog />
+      </div>
       <div className="flex flex-col gap-2 items-center">
         {items?.map((item) => {
           return <Item key={item.id} item={item} />;
