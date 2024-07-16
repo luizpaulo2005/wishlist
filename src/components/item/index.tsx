@@ -11,6 +11,7 @@ dayjs.extend(relativeTime);
 dayjs.locale("pt-br");
 
 interface ItemProps {
+  fetchItems: () => void;
   item: {
     id: string;
     name: string;
@@ -24,6 +25,7 @@ interface ItemProps {
 }
 
 const Item = ({
+  fetchItems,
   item: { id, name, value, description, url, createdAt, updatedAt, status },
 }: ItemProps) => {
   return (
@@ -56,7 +58,7 @@ const Item = ({
           <Button variant="ghost" size="icon">
             <Pen className="size-4" />
           </Button>
-          <DeleteItemDialog id={id} />
+          <DeleteItemDialog id={id} fetchItems={fetchItems} />
         </div>
       </div>
     </div>

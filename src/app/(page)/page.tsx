@@ -31,7 +31,9 @@ interface ItemProps {
 
 const Page = () => {
   const [items, setItems] = useState<ItemProps[] | undefined>([]);
-  const [filteredItems, setFilteredItems] = useState<ItemProps[] | undefined>([])
+  const [filteredItems, setFilteredItems] = useState<ItemProps[] | undefined>(
+    []
+  );
   const { status } = useSession();
   const [name] = useQueryState("name");
   const [total, setTotal] = useState(0);
@@ -86,13 +88,15 @@ const Page = () => {
 
   useEffect(() => {
     if (name) {
-      setFilteredItems(items?.filter((item) => item.name.includes(name)))
-      
+      const filtered = items?.filter((item) => item.name.includes(name));
+      setFilteredItems(filtered);
+      setTotal(filtered?.length || 0);
     } else {
-      setFilteredItems(items)
+      setFilteredItems(items);
+      setTotal(items?.length || 0);
     }
-    setTotal(filteredItems?.length || 0)
-  }, [name, items, filteredItems])
+  }, [name, items]);
+  
 
   if (status === "unauthenticated") {
     return <LoginModal />;
@@ -110,17 +114,17 @@ const Page = () => {
     <div className="max-w-3xl mt-2 space-y-2 mx-auto">
       <div className="flex items-center justify-between">
         <ItemsFilters />
-        <CreateItemDialog />
+        <CreateItemDialog fetchItems={fetchItems} />
       </div>
       <div className="flex flex-col gap-2 items-center">
         {filteredItems?.slice((page - 1) * 10, page * 10).map((item) => {
-          return <Item key={item.id} item={item} />;
+          return <Item key={item.id} item={item} fetchItems={fetchItems} />;
         })}
       </div>
       <div className="flex items-center justify-between">
         <span>
-          Mostrando {filteredItems?.slice((page - 1) * 10, page * 10).length} de {total}{" "}
-          itens
+          Mostrando {filteredItems?.slice((page - 1) * 10, page * 10).length} de{" "}
+          {total} itens
         </span>
         <span>
           Página {page} de {totalPages}

@@ -6,17 +6,30 @@ import { DialogClose, DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 import axios from "axios";
+import { useState } from "react";
 
 const createItemSchema = z.object({
   name: z.string().nonempty("O nome do item não pode ser vazio"),
   description: z.string(),
-  url: z.string().optional().or(z.string().url("O link do item deve ser uma URL válida")),
-  value: z.coerce.number().positive("O preço do item deve ser maior que zero"),
+  url: z
+    .string()
+    .optional()
+    .or(z.string().url("O link do item deve ser uma URL válida")),
+  value: z.coerce
+    .number({ message: "Insira um número válido" })
+    .positive("O preço do item deve ser maior que zero"),
 });
 
 type CreateItemForm = z.infer<typeof createItemSchema>;
 
-const CreateItemForm = () => {
+interface CreateItemFormProps {
+  fetchItems: () => void;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+const CreateItemForm = ({ fetchItems, setIsOpen }: CreateItemFormProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -32,6 +45,7 @@ const CreateItemForm = () => {
     value,
   }: CreateItemForm) => {
     toast.loading("Cadastrando item...");
+    setIsSubmitting(true);
 
     await axios
       .post("/api/item", {
@@ -43,12 +57,14 @@ const CreateItemForm = () => {
       .then(() => {
         toast.success("Item cadastrado com sucesso");
         setTimeout(() => {
-          window.location.reload();
+          fetchItems();
+          setIsOpen(false);
         }, 2000);
       })
       .catch((err) => {
         toast.error(`${err.response.status}: ${err.response.data.message}`);
-      });
+      })
+      .finally(() => setIsSubmitting(false));
   };
 
   return (
@@ -76,7 +92,7 @@ const CreateItemForm = () => {
       </div>
       <div className="space-y-1">
         <label>Preço</label>
-        <Input {...register("value")} />
+        <Input type="number" step={0.01} {...register("value")} />
         {errors.value && (
           <span className="text-red-500">{errors.value.message}</span>
         )}
@@ -87,7 +103,12 @@ const CreateItemForm = () => {
             Fechar
           </Button>
         </DialogClose>
-        <Button size="default" type="submit" variant="secondary">
+        <Button
+          disabled={isSubmitting}
+          size="default"
+          type="submit"
+          variant="secondary"
+        >
           Cadastrar
         </Button>
       </DialogFooter>

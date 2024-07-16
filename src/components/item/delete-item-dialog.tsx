@@ -15,9 +15,10 @@ import { Trash2 } from "lucide-react";
 
 interface DeleteItemDialogProps {
   id: string;
+  fetchItems: () => void;
 }
 
-const DeleteItemDialog = ({ id }: DeleteItemDialogProps) => {
+const DeleteItemDialog = ({ id, fetchItems }: DeleteItemDialogProps) => {
   const deleteItem = async () => {
     toast.loading("Apagando item...");
 
@@ -26,7 +27,7 @@ const DeleteItemDialog = ({ id }: DeleteItemDialogProps) => {
       .then(() => {
         toast.success("Item apagado com sucesso!");
         setTimeout(() => {
-          window.location.reload();
+          fetchItems();
         }, 2000);
       })
       .catch((err) => {
