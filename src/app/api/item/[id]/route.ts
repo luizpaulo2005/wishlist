@@ -67,7 +67,7 @@ const getItem = async (
 const updateItemSchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
-  url: z.string().url().optional(),
+  url: z.string().optional().or(z.string().url("O link do item deve ser uma URL válida")),
   value: z.number().positive().optional(),
   status: z.boolean().optional(),
 });
