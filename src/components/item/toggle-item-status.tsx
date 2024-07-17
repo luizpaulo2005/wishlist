@@ -16,9 +16,14 @@ import axios from "axios";
 interface ToggleItemStatusProps {
   id: string;
   status: boolean;
+  fetchItems: () => void;
 }
 
-const ToggleItemStatus = ({ id, status }: ToggleItemStatusProps) => {
+const ToggleItemStatus = ({
+  id,
+  status,
+  fetchItems,
+}: ToggleItemStatusProps) => {
   const toggleItemStauts = async () => {
     toast.loading("Atualizando item...");
 
@@ -27,7 +32,7 @@ const ToggleItemStatus = ({ id, status }: ToggleItemStatusProps) => {
       .then(() => {
         toast.success("Item atualizado com sucesso!");
         setTimeout(() => {
-          window.location.reload();
+          fetchItems();
         }, 2000);
       })
       .catch((err) => {

@@ -1,10 +1,8 @@
 import { DeleteItemDialog } from "@/components/item/delete-item-dialog";
 import { ItemInfoPopover } from "@/components/item/item-info-popover";
-import { Button } from "@/components/ui/button";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Pen } from "lucide-react";
 import { ToggleItemStatus } from "./toggle-item-status";
 import { UpdateItemDialog } from "./update-item-dialog";
 
@@ -29,7 +27,11 @@ const Item = ({ fetchItems, item }: ItemProps) => {
   return (
     <div className="flex items-center justify-between gap-2 p-2 w-full max-w-full border rounded-lg">
       <div className="flex items-center gap-2">
-        <ToggleItemStatus id={item.id} status={item.status} />
+        <ToggleItemStatus
+          fetchItems={fetchItems}
+          id={item.id}
+          status={item.status}
+        />
         <div className="flex items-center gap-2">
           <ItemInfoPopover
             description={item.description}
