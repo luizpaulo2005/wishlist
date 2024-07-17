@@ -134,7 +134,7 @@ const Page = () => {
             size="icon"
             variant="outline"
             onClick={goToFirstPage}
-            disabled={page === 1}
+            disabled={page === 1 || filteredItems?.length === 0}
           >
             <ChevronsLeft className="size-4" />
           </Button>
@@ -142,7 +142,7 @@ const Page = () => {
             size="icon"
             variant="outline"
             onClick={goToPreviousPage}
-            disabled={page === 1}
+            disabled={page === 1 || filteredItems?.length === 0}
           >
             <ChevronLeft className="size-4" />
           </Button>
@@ -150,7 +150,7 @@ const Page = () => {
             size="icon"
             variant="outline"
             onClick={goToNextPage}
-            disabled={page === totalPages}
+            disabled={page === totalPages || filteredItems?.length === 0}
           >
             <ChevronRight className="size-4" />
           </Button>
@@ -158,7 +158,7 @@ const Page = () => {
             size="icon"
             variant="outline"
             onClick={goToLastPage}
-            disabled={page === totalPages}
+            disabled={page === totalPages || filteredItems?.length === 0}
           >
             <ChevronsRight className="size-4" />
           </Button>
