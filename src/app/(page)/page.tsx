@@ -107,7 +107,7 @@ const Page = () => {
   }
 
   if (items?.length === 0) {
-    return <NoItems />;
+    return <NoItems fetchItems={fetchItems} />;
   }
 
   return (
