@@ -16,7 +16,7 @@ const ItemInfoPopover = ({ description, createdAt, updatedAt, status }: ItemInfo
               <ChevronDown className="size-5" />
             </PopoverTrigger>
             <PopoverContent className="text-xs text-zinc-500 space-y-2">
-              <p>{!description && "Sem"} Descrição: {description && description}</p>
+              <p>{!description ? "Sem descrição" : `Descrição: ${description}`}</p>
               <p>
                 Adicionado {`${dayjs(createdAt).fromNow()} (${dayjs(createdAt).format("DD/MM/YYYY")})`}
               </p>
