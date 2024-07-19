@@ -63,7 +63,7 @@ const UpdateItemForm = ({ item, fetchItems, setIsOpen }: UpdateItemFormProps) =>
     value,
     status
   }: UpdateItemForm) => {
-    toast.loading("Atualizando item...");
+    toast.loading("Atualizando item...", { duration: 3000 });
     setIsSubmitting(true);
 
     await axios

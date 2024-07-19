@@ -44,7 +44,7 @@ const CreateItemForm = ({ fetchItems, setIsOpen }: CreateItemFormProps) => {
     url,
     value,
   }: CreateItemForm) => {
-    toast.loading("Cadastrando item...");
+    toast.loading("Cadastrando item...", { duration: 3000 });
     setIsSubmitting(true);
 
     await axios

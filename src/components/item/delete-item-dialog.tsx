@@ -20,7 +20,7 @@ interface DeleteItemDialogProps {
 
 const DeleteItemDialog = ({ id, fetchItems }: DeleteItemDialogProps) => {
   const deleteItem = async () => {
-    toast.loading("Apagando item...");
+    toast.loading("Apagando item...", { duration: 3000 });
 
     await axios
       .delete(`/api/item/${id}`)

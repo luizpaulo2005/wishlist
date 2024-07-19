@@ -25,7 +25,7 @@ const ToggleItemStatus = ({
   fetchItems,
 }: ToggleItemStatusProps) => {
   const toggleItemStauts = async () => {
-    toast.loading("Atualizando item...");
+    toast.loading("Atualizando item...", { duration: 3000 });
 
     await axios
       .patch(`/api/item/${id}`)
