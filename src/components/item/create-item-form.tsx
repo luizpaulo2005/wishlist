@@ -2,11 +2,12 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogClose, DialogFooter } from "../ui/dialog";
-import { Button } from "../ui/button";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
 import { useState } from "react";
+import { TailSpin } from "react-loader-spinner";
 
 const createItemSchema = z.object({
   name: z.string().nonempty("O nome do item não pode ser vazio"),
@@ -44,7 +45,7 @@ const CreateItemForm = ({ fetchItems, setIsOpen }: CreateItemFormProps) => {
     url,
     value,
   }: CreateItemForm) => {
-    toast.loading("Cadastrando item...", { duration: 3000 });
+    toast("Cadastrando item...", { icon: <TailSpin width={20} /> }); 
     setIsSubmitting(true);
 
     await axios

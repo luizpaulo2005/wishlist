@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import axios from "axios";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { TailSpin } from "react-loader-spinner";
 
 interface DeleteItemDialogProps {
   id: string;
@@ -20,7 +21,7 @@ interface DeleteItemDialogProps {
 
 const DeleteItemDialog = ({ id, fetchItems }: DeleteItemDialogProps) => {
   const deleteItem = async () => {
-    toast.loading("Apagando item...", { duration: 3000 });
+    toast("Apagando item...", { icon: <TailSpin width={20} /> });
 
     await axios
       .delete(`/api/item/${id}`)

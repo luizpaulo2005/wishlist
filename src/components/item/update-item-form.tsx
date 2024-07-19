@@ -5,9 +5,10 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
-import { DialogClose, DialogFooter } from "../ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
+import { TailSpin } from "react-loader-spinner";
 
 const updateItemSchema = z.object({
     name: z.string().nonempty("O nome do item não pode ser vazio"),
@@ -63,7 +64,7 @@ const UpdateItemForm = ({ item, fetchItems, setIsOpen }: UpdateItemFormProps) =>
     value,
     status
   }: UpdateItemForm) => {
-    toast.loading("Atualizando item...", { duration: 3000 });
+    toast("Atualizando item...", { icon: <TailSpin width={20} /> });
     setIsSubmitting(true);
 
     await axios

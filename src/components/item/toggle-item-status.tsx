@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
+import { TailSpin } from 'react-loader-spinner'
 
 interface ToggleItemStatusProps {
   id: string;
@@ -25,15 +26,15 @@ const ToggleItemStatus = ({
   fetchItems,
 }: ToggleItemStatusProps) => {
   const toggleItemStauts = async () => {
-    toast.loading("Atualizando item...", { duration: 3000 });
+    toast("Atualizando item...", { icon: <TailSpin width={20} /> });
 
     await axios
       .patch(`/api/item/${id}`)
       .then(() => {
-        toast.success("Item atualizado com sucesso!");
         setTimeout(() => {
           fetchItems();
         }, 2000);
+        toast.success("Item atualizado com sucesso!");
       })
       .catch((err) => {
         toast.error(`${err.response.status}: ${err.response.data.message}`);
