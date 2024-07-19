@@ -21,7 +21,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
       <AuthProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <body className={inter.className}>
-            <Toaster richColors duration={3000} />
+            <Toaster richColors visibleToasts={1} duration={3000} />
             <Navbar />
             {children}
           </body>
