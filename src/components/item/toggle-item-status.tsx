@@ -54,7 +54,7 @@ const ToggleItemStatus = ({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Deseja marcar este item como {status ? "não comprado" : "comprado"}?
+            Deseja marcar este item como {status && "não comprado"}?
           </AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
