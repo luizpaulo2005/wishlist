@@ -142,7 +142,7 @@ const UpdateItemForm = ({ item, fetchItems, setIsOpen }: UpdateItemFormProps) =>
           type="submit"
           variant="secondary"
         >
-          Cadastrar
+          Atualizar
         </Button>
       </DialogFooter>
     </form>
